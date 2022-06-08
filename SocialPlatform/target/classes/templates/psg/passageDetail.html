@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<base href="/" />
+		<meta charset="utf-8">
+		<title>图像风格迁移网站</title>
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/list.css" />
+		<link rel="stylesheet" href="css/modaldialog.css" />
+		<script src="js/jquery-3.5.1.min.js"></script>
+		<script src="js/modaldialog.js"></script>
+		<script>
+			function sound(content){
+				var data = {data:content}
+				$.ajax({
+					url: "/comment/sound",
+					type: "POST",
+					dataType: "json",
+					data: data,
+					success:function(data){
+						console.log("开始播报语音");
+						$("audio").attr("autobuffer", false);
+						// 设置audio组件的音频文件地址
+
+						$("audio").attr("src", "/audio/" + data.filename);
+						// 播放语音
+						document.getElementById("audio").play();
+					}
+				});
+
+
+			}
+		</script>
+		<script>
+			/**
+			 * 全选与反选
+			 * @param {Object} target 事件源
+			 */
+			function checkOrUncheckAll(target) {
+				//获得所有name属性值为id复选框
+				var idCheckboxs = $("#form2 input[name=id]");
+				//更改选中的状态
+				idCheckboxs.prop("checked", target.checked);
+			}
+			
+			/**
+			 * 添加
+			 */
+			function addComment() {
+				location.href = "/psg/addCommentView/"+[[${currentPassage.id}]];
+			}
+			
+			/**
+			 * 修改
+			 */
+			function update() {
+				//获得选中行（选中复选框）的数量
+				var count = $("#form2 input[name=id]:checked").length;
+				//判断是否未选中1行数据
+				if(count != 1) {
+					alert("请选择1行修改的数据!");
+					return;
+				}
+				//连接到修改页面
+				location.href = "admin/type/typeupdate.html";
+			}
+			
+			/**
+			 * 删除
+			 */
+			function deleting() {
+				var count = $("#form2 input[name=id]:checked").length;
+				//判断是否未选中数据行
+				if(count == 0) {
+					alert("请至少选择1行删除的数据!");
+					return;
+				}
+				//弹出选择对话框，用户确认是否删除
+				confirm("您确定要删除选择的数据行?", function() {
+					location.href = "admin/type/typelist.html";
+				});
+			}
+			
+			//页面加载完毕后执行
+			$(function() {
+				//数据行中复选框绑定单击事件
+				$("#form2 input[name=id]").on("click", function() {
+					//获得数据行中复选框选中的数量
+					var count = $("#form2 input[name=id]:checked").length;
+					//判断选中的数是否为0
+					if(count == 0) {
+						//取消表头中复选框的选中状态
+						$("#form2 table tr th input").prop("checked", false);
+					}
+				});
+				/* $("body").append('<div style="position:absolute;'+
+					'top:0px;right:0px;bottom:0px;left:0px;background:#000000;opacity:0.3;"></div>'); */
+			});
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<img src="img/logo2.png" width="126" height="35" style="margin-top: 18px" class="logo" />
+			<div class="user-info"><i class="fa fa-user-circle-o"></i>[[${session.user.name}]]
+				<ul>
+					<li><a href="logout">注销</a></li>
+				</ul>
+			</div>
+		</div>
+		<div id="pageBody">
+			<div id="sideBar">
+				<iframe src="sidebar.html" width="100%" height="100%" frameborder="0"></iframe>
+			</div>
+			<div class="content">
+				<div class="data-list">
+					<div>
+						<div>
+							<p style="font-size: 25px;margin-top: 8px;" align="center">
+								<button style="font-size: 17px; border-radius: 8px;height:30px;background-color: skyblue; color: black;"
+										onclick=""><i class="fa fa-tag" aria-hidden="true"></i>&nbsp[[${currentPassage.tag}]]</button>
+								&nbsp&nbsp[[${currentPassage.title}]]
+							</p>
+							<p style="font-size: 20px;">
+								<a style="font-size: 17px; color: black"><i class="fa fa-user-circle" aria-hidden="true"></i>&nbsp[[${currentPassage.author}]]</a>
+							</p>
+							<p style="font-size: 17px;">
+								<i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp发布时间：[[${currentPassage.pubTime.toString().substring(0, currentPassage.pubTime.toString().indexOf("."))}]]
+							</p>
+						</div>
+						<p style="font-size: 15px;">
+							<br>
+							<br>
+							[[${currentPassage.content}]]
+						</p>
+						<br>
+						<br>
+						<div>
+							<p style="text-align:center;">
+								<img th:src="@{(${currentPassage.imgurl})}" style="height: 300px;width: 300px">
+							</p>
+
+						</div>
+					</div>
+
+					<p style="font-size:17px;"><i class="fa fa-comments"></i>共[[${comments.size()}]]条评论</p>
+					<br>
+					<div th:each="cmt, status: ${comments}">
+						<div>
+							<p style="font-size: 15px;">
+								<a style="font-size: 15px; color: black">[[${cmt.userName}]]</a>
+								<br>
+								<a style="color: black;" th:href="'javascript:sound('+'\''+${cmt.comment}+'\''+')'"><i class="fa fa-play-circle" aria-hidden="true"></i></a> [[${cmt.comment}]]
+							</p>
+						</div>
+
+						<p style="font-size: 13px;">
+							<i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp&nbsp[[${cmt.pubTime.toString().substring(0, cmt.pubTime.toString().indexOf("."))}]]
+						</p>
+						<br>
+					</div>
+				</div>
+
+
+				<div class="oper-bar">
+					<div class="btn-bar">
+						<button class="btn btn-primary" onclick="addComment()"><i class="fa fa-plus"></i>发表我的评论</button>
+					</div>
+				</div>
+
+
+
+
+			</div>
+		</div>
+		<!-- <div id="modalDialog">
+			<div class="modal-dialog">
+				<i class="fa fa-remove"></i>
+				<p class="modal-dialog-title">提示</p>
+				<p class="modal-dialog-message">.....</p>
+				<p class="modal-dialog-btns">
+					<input type="button" value="确 定" class="btn btn-primary btn-sm" />
+				</p>
+			</div>
+		</div> -->
+
+		<!-- 设置audio组件，用于播放合成语音 -->
+		<div style="margin:0px auto;">
+			<audio id="audio" controls style="width:300px; margin-top: 40px;display: none;">
+				您的浏览器不支持audio组件
+			</audio>
+		</div>
+	</body>
+</html>

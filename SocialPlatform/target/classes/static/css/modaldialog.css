@@ -1,0 +1,48 @@
+@charset "utf-8";
+#modalDialog {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	background-color: rgba(0, 0, 0, 0.3);
+	/* opacity: 0.3; */
+	z-index: 20;
+}
+#modalDialog .modal-dialog {
+	position: relative;
+	width: 360px;
+	margin: 300px auto 0px;
+	border: solid 1px #CECECE;
+	border-radius: 3px;
+	background-color: #FFFFFF;
+	box-shadow: 0px 0px 5px 1px #5E5E5E;
+}
+#modalDialog .modal-dialog i.fa {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	cursor: pointer;
+}
+#modalDialog .modal-dialog .modal-dialog-title {
+	width: 100%;
+	margin-top: 10px;
+	border-bottom: solid 1px #E8E8E8;
+	font-size: 14px;
+	text-indent: 12px;
+}
+#modalDialog .modal-dialog .modal-dialog-message {
+	width: 100%;
+	margin: 20px 0px;
+	text-indent: 36px;
+}
+#modalDialog .modal-dialog .modal-dialog-btns {
+	width: 100%;
+	text-align: right;
+}
+#modalDialog .modal-dialog .modal-dialog-btns input {
+	margin-left: 10px;
+}
+#modalDialog .modal-dialog .modal-dialog-btns input:last-child {
+	margin-right: 15px;
+}

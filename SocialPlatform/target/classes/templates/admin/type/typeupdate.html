@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="/demo0907/" />
+		<meta charset="utf-8">
+		<title>Secoo管理平台</title>
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/add.css" />
+		<script src="js/jquery-3.5.1.min.js"></script>
+		<script>
+			
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<img src="img/logo2.png" width="30" height="70" class="logo" />
+			<ul class="header-nav">
+				<li><a href="index.html">寺库首页</a></li>
+				<li><a href="javascript:void(0);">收藏寺库</a></li>
+				<li><a href="javascript:void(0);">寺库APP</a></li>
+			</ul>
+			<div class="user-info"><i class="fa fa-user-circle-o"></i>admin
+				<ul>
+					<li><a href="javascript:void(0);">个人中心</a></li>
+					<li><a href="javascript:void(0);">修改密码</a></li>
+					<li><a href="login.html">注销</a></li>
+				</ul>
+			</div>
+		</div>
+		<div id="pageBody">
+			<h4 class="title">商品类型</h4>
+			<hr />
+			<div id="sideBar">
+				<iframe src="sidebar.html" width="100%" height="100%" frameborder="0"></iframe>
+			</div>
+			<div class="content">
+				<div class="input-bar">
+					<i class="fa fa-reply" onclick="location.href='admin/type/typelist.html';"></i>
+				</div>
+				<div class="input-panel">
+					<form id="form1" method="get" action="admin/type/typelist.html">
+						<dl>
+							<dt>修改商品类型</dt>
+							<dd>
+								<p>类型名</p>
+								<p><input type="text" name="typeName" autofocus class="form-control" 
+									value="包袋"/></p>
+							</dd>
+							<dd>
+								<p>描述</p>
+								<p><textarea name="typeDesc" class="form-control">单肩包、斜跨包、双肩包等。</textarea></p>
+							</dd>
+							<dd class="btn-groups">
+								<input type="submit" value="确 定" class="btn btn-primary" />
+								<input type="reset" value="重 置" class="btn btn-success" />
+							</dd>
+						</dl>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

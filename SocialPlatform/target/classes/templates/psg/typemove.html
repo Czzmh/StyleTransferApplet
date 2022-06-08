@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<base href="/" />
+		<meta charset="utf-8">
+		<title>图像风格迁移网站</title>
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/list.css" />
+		<link rel="stylesheet" href="css/modaldialog.css" />
+
+		<style>
+			.image-container{
+				width: 100%;
+				display: flex;
+				align-items: center;
+			}
+			.image-container-item{
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				justify-content: center;
+			}
+			.image-container-left-top{
+				width: 300px;
+				height: 300px;
+				border: 1px solid #e5e5e5;
+				margin-bottom: 20px;
+			}
+			.image-container-left-top img{
+				width: 100%;
+				height: 100%;
+			}
+			.image-container-center{
+				width: 120px;
+				height: 40px;
+				margin: 0 40px;
+			}
+			.image-container-button{
+				width: 120px;
+				height: 40px;
+				background-color: #3366ff;
+				text-align: center;
+				line-height: 40px;
+				font-size: 18px;
+				color: #fff;
+				border-radius: 10px;
+				cursor: pointer;
+			}
+		</style>
+		<script src="js/jquery-3.5.1.min.js"></script>
+		<script src="js/index.js"></script>
+		<script src="js/modaldialog.js"></script>
+		<script>
+			$(function () {
+				// PicScroll
+				new PicScroll('.img-box', { speedUp: 800, speedDown: 500 })
+			});
+		</script>
+		<script>
+			var indexss = -1;
+			function uploadFile(){
+				//$("#imgfile").click();
+				var imgfile = $("#imgfile").val();
+				if(imgfile==""){
+					alert("请选择图片!");
+					return;
+				}
+				var files = $("#imgfile")[0].files;
+				var formData = new FormData();
+				console.log(files[0])
+				formData.append('file', files[0]);
+				$.ajax({
+					url: 'psg/typeUpload', //单文件上传
+					type: 'POST',
+					processData: false,
+					contentType: false,
+					data: formData,
+					async: false,
+					success: function (json) {
+						$.ajax({
+							url: "psg/img?t="+new Date().getTime(), //单文件上传
+							type: 'GET',
+							async: false,
+							success: function (json) {
+								$("#oldimg").prop("src","data:image/jpeg;base64,"+json);
+							}
+						})
+					}
+				})
+			}
+
+			function moveImg() {
+				var imgsrc = $("#oldimg").attr("src");
+				if(imgsrc==""){
+					alert("请上传图片！");
+					return;
+				}
+				$.ajax({
+					url: "psg/imgView?t="+new Date().getTime(), //单文件上传
+					type: 'GET',
+					async: false,
+					success: function (json) {
+						$("#newimg").prop("src","data:image/jpeg;base64,"+json);
+					}
+				})
+			}
+			function downloadImg(){
+				var imgsrc = $("#oldimg").attr("src");
+				if(imgsrc==""){
+					alert("请上传图片！");
+					return;
+				}
+				location.href='psg/downloadImg'
+			}
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<img src="img/logo2.png" width="126" height="35" style="margin-top: 18px" class="logo" />
+			<ul class="header-nav">
+
+			</ul>
+			<div class="user-info"><i class="fa fa-user-circle-o"></i>[[${session.user.name}]]
+				<ul>
+					<li><a href="logout">注销</a></li>
+				</ul>
+			</div>
+		</div>
+		<div id="pageBody">
+			<div id="sideBar">
+				<iframe src="sidebar.html" width="100%" height="100%" frameborder="0"></iframe>
+			</div>
+			<div class="content">
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<div class="data-list">
+					<div class="image-container">
+						<div class="image-container-item">
+							<div class="image-container-left-top">
+								<img src="img/fail.png" style="width: 300px;height: 300px;border: 4px dashed lightskyblue; border-radius: 12px;" id="oldimg"><br/>
+							</div>
+							<div class="image-container-button" >
+								<span onclick="uploadFile()">上传图片</span><br/>
+								<input type="file" id="imgfile" style="margin: 5px;"/>
+							</div>
+						</div>
+						<div class="image-container-button image-container-center" onclick="moveImg()">
+							风格迁移
+						</div>
+						<div class="image-container-item">
+							<div class="image-container-left-top">
+								<img src="img/fail.png" id="newimg" style="width: 300px;height: 300px;border: 4px dashed lightskyblue; border-radius: 12px;">
+							</div>
+							<div class="image-container-button" onclick="downloadImg()">保存图片</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
