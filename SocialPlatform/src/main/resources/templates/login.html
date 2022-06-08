@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+	<head>
+		<base href="/" />
+		<meta charset="utf-8">
+		<title>图像风格迁移网站</title>
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="css/login.css" />
+		<script src="js/jquery-3.5.1.min.js"></script>
+		<script th:inline="javascript">
+			var error = [[${error}]];
+		</script>
+		<script>
+			// 页面启动函数
+			$(document).ready(function(){
+				console.log("页面启动");
+				// 调用invokeCamera()
+				invokeCamera();
+				// 创建全局对象context,存放人像数据
+				var context = canvas.getContext("2d");
+				// 为按钮添加单击处理事件
+				document.getElementById("acqusition_of_features").addEventListener("click", function(){
+					console.log("点击按钮");
+					// 在canvas中生成静态人像图片
+					context.drawImage(video,0,0,100,80); //
+					console.log("人像采集完毕")
+					// 调用人像数据上传函数
+					uploadImage();
+				});
+			});
+
+			// 自定义一个函数，启动设备摄像头，并将视频流数据实时显示在组件中
+			function invokeCamera(){
+				console.log("开始调用invokeCamera()函数");
+				// 步骤1：创建局部变量设置视频采集区域大小以及是否接受声音
+				let constranits = {
+					video: {width:510, height:430},
+					audio: false // 设置为True可以获取声音
+				}
+				console.log("获取video对象");
+				let video = document.getElementById("video"); // 得到video标签的dom对象
+				console.log("获取promise对象")
+				let promise = navigator.mediaDevices.getUserMedia(constranits); // Edge  chrome
+				console.log("获取到的视频流绑定到video对象中")
+				// 使用promise对象的then()函数
+				promise.then(function(MediaStream){ // 摄像头的视频流
+					video.srcObject = MediaStream;  // 将媒体流对象设置到video组件中
+					video.play();  // 设置video对象为播放状态
+				});
+			}
+
+
+			// 自定义函数实现Ajax图片上传
+			var uploadImage = function(){
+				console.log("启动人像图片上传");
+				// 获取canvas组件中的图片信息数据
+				imageData = getBase64(); // base64编码格式数据
+				// 将人像图片的数据类型装换成json格式
+				var data = {data: $("#username1").val()+"%"+imageData};
+				var username = {username: $("#username1").val()};
+				console.log(data);
+
+				$.ajax({
+					url: "/facelogin",  // 请求地址
+					type: "POST",              // 发送post请求
+					dataType: "json",          // 响应结果的数据类型
+					data: data,                 // 请求数据
+					success:function(data){    // 响应的回调函数
+						var nextpage = data.nextpath ;
+						if(nextpage == ""){
+							//alert("用户名错误或人脸识别失败!");
+							var obj1 = document.getElementById("errordisplay");
+							obj1.innerHTML= "用户名错误或人脸识别失败";
+						}else{
+							window.location.href = nextpage;
+						}
+					}
+				});
+			}
+
+			function getBase64() {
+				// DOM：文档对象模型  $("#canvas") imgSrc 就是base64的字符串，带文件头 string
+				var imgSrc = document.getElementById("canvas").toDataURL(
+						"image/png");
+				console.log(imgSrc);
+				return imgSrc.split("base64,")[1];
+			}
+
+
+
+			/**
+			 * 切换登录的界面
+			 * @param {Object} target 事件源
+			 * @param {Object} id  界面(div)的id
+			 */
+			function toggleLoginPanel(target, id) {
+				//删除所有拥有.active样式的label标签的active样式
+				$("#pageBody .pd-panel .oper-tab label.active").removeClass("active");
+				//获得Label标签对象
+				var label = $(target).parent();
+				//修改样式，高亮当前Label标签，切换为选中状态
+				label.addClass("active");
+				//获得操作界面
+				var qrcodeLogin = $("#qrcodeLogin");
+				var passwordLogin = $("#passwordLogin");
+				//设置两操作界面均不显示
+				qrcodeLogin.css("display", "none");
+				passwordLogin.css("display", "none");
+				//显示指定id的操作界面
+				$("#"+id).css("display", "block");
+			}
+
+			//页面加载完毕后执行
+			$(function(){
+				if(true) {
+					var loginButton = $("#LoginButton").get(0);
+					toggleLoginPanel(loginButton, "passwordLogin");
+				}
+			});
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<img src="img/logo2.png" width="126" height="35" style="margin-top: 18px" class="logo" />
+			<ul class="header-nav">
+				<li><a href="/user/signupview">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp用户注册</a></li>
+			</ul>
+		</div>
+		<div id="pageBody">
+			<div class="pd-panel">
+				<div class="oper-tab">
+					<label class="active"><span onclick="toggleLoginPanel(this,'qrcodeLogin')">扫脸登录</span>
+						</label><label><span id="LoginButton" onclick="toggleLoginPanel(this,'passwordLogin')">密码登录</span></label>
+				</div>
+				<div id="qrcodeLogin">
+					<div style="margin:0px auto;display: none;">
+						<canvas id="canvas" width="100", height="80"
+								style="border: 1px dashed blueviolet; border-radius: 10px; margin-top: 30px;"></canvas>
+					</div>
+					<form id="form_face" method="post", action="">
+						<dl>
+							<dd>
+								<p class="form-p-input"><input id = "username1" type="text" name="userName" placeholder="用户名" required autofocus class="form-input" />
+									<i class="fa fa-user fa-2x"></i>
+								</p>
+							</dd>
+							<dd>
+								<video id="video" autoplay="autoplay"
+									   style="width: 200px; border: 4px dashed lightskyblue; border-radius: 12px;">
+								</video>
+							</dd>
+							<p id="errordisplay" style="text-align: center; color: red;"></p>
+						</dl>
+					</form>
+					<div style="margin:0px auto; ">
+						<button id="acqusition_of_features"
+								style="cursor: pointer; width: 140px;
+                           height: 45px; color: white;
+                           background-color:#1a7dde;
+                           border: 0px; border-radius: 7px;
+                           margin-top: 10px;">
+							获取人像图片
+						</button>
+					</div>
+				</div>
+
+				<div id="passwordLogin">
+					<form id="form1" method="post" action="login">
+						<dl>
+							<dd>
+								<p class="form-p-input"><input type="text" name="userName" placeholder="用户名" required autofocus class="form-input" />
+									<i class="fa fa-user fa-2x"></i>
+								</p>
+							</dd>
+							<dd>
+								<p class="form-p-input"><input type="password" name="password" placeholder="密码" required class="form-input" />
+									<i class="fa fa-lock fa-2x"></i>
+								</p>
+							</dd>
+							<p style="text-align: center; color: red;"></p>
+							<dd>
+								<p style="text-align: center; color: red;">[[${error}]]</p>
+								<p class="form-btn"><input type="submit" value="立即登录" /></p>
+							</dd>
+						</dl>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

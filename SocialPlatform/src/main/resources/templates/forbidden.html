@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="/" />
+		<meta charset="utf-8">
+		<title>图像风格迁移网站</title>
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/list.css" />
+		<link rel="stylesheet" href="css/modaldialog.css" />
+		<script src="js/jquery-3.5.1.min.js"></script>
+		<script src="js/modaldialog.js"></script>
+		<script>
+			/**
+			 * 全选与反选
+			 * @param {Object} target 事件源
+			 */
+			function checkOrUncheckAll(target) {
+				//获得所有name属性值为id复选框
+				var idCheckboxs = $("#form2 input[name=id]");
+				//更改选中的状态
+				idCheckboxs.prop("checked", target.checked);
+			}
+			
+			/**
+			 * 添加
+			 */
+			function add() {
+				location.href = "admin/type/typeadd.html";
+			}
+			
+			/**
+			 * 修改
+			 */
+			function update() {
+				//获得选中行（选中复选框）的数量
+				var count = $("#form2 input[name=id]:checked").length;
+				//判断是否未选中1行数据
+				if(count != 1) {
+					alert("请选择1行修改的数据!");
+					return;
+				}
+				//连接到修改页面
+				location.href = "admin/type/typeupdate.html";
+			}
+			
+			/**
+			 * 删除
+			 */
+			function deleting() {
+				var count = $("#form2 input[name=id]:checked").length;
+				//判断是否未选中数据行
+				if(count == 0) {
+					alert("请至少选择1行删除的数据!");
+					return;
+				}
+				//弹出选择对话框，用户确认是否删除
+				confirm("您确定要删除选择的数据行?", function() {
+					location.href = "admin/type/typelist.html";
+				});
+			}
+			
+			//页面加载完毕后执行
+			$(function() {
+				//数据行中复选框绑定单击事件
+				$("#form2 input[name=id]").on("click", function() {
+					//获得数据行中复选框选中的数量
+					var count = $("#form2 input[name=id]:checked").length;
+					//判断选中的数是否为0
+					if(count == 0) {
+						//取消表头中复选框的选中状态
+						$("#form2 table tr th input").prop("checked", false);
+					}
+				});
+				/* $("body").append('<div style="position:absolute;'+
+					'top:0px;right:0px;bottom:0px;left:0px;background:#000000;opacity:0.3;"></div>'); */
+			});
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<img src="img/logo2.png" width="126" height="35" style="margin-top: 18px" class="logo" />
+			<div class="user-info"><i class="fa fa-user-circle-o"></i>[[${session.user.name}]]
+				<ul>
+					<li><a href="logout">注销</a></li>
+				</ul>
+			</div>
+		</div>
+		<div id="pageBody">
+			<hr />
+			<div id="sideBar">
+				<iframe src="sidebar.html" width="100%" height="100%" frameborder="0"></iframe>
+			</div>
+			<div class="content">
+				<p align="center" style="color: red; font-size: 30px">您不是管理员，拒绝访问！</p>
+			</div>
+		</div>
+		<!-- <div id="modalDialog">
+			<div class="modal-dialog">
+				<i class="fa fa-remove"></i>
+				<p class="modal-dialog-title">提示</p>
+				<p class="modal-dialog-message">.....</p>
+				<p class="modal-dialog-btns">
+					<input type="button" value="确 定" class="btn btn-primary btn-sm" />
+				</p>
+			</div>
+		</div> -->
+	</body>
+</html>
