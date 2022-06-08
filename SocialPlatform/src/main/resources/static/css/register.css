@@ -1,0 +1,94 @@
+@charset "utf-8";
+body {
+	font-family: "微软雅黑";
+	font-size: 12px;
+	margin: 0px;
+	/* background: url(../img/register_bg.jpg) no-repeat 130px 0px; */
+	background: #fdf8f4 url(../img/background.jpg) no-repeat center center;
+	background-size: 10%;
+}
+#header {
+	position: relative;
+	width: 100%;
+	height: 70px;
+	background-color: #000000;
+}
+#header .logo {
+	position: absolute;
+	top: 0px;
+	left: 100px;
+}
+#header .header-nav {
+	position: absolute;
+	width: 260px;
+	top: 28px;
+	right: 50px;
+	margin: 0px;
+	padding: 0px;
+}
+#header .header-nav li {
+	float: left;
+	list-style: none;
+	margin-right: 25px;
+}
+#header .header-nav li a {
+	color: #CECECE;
+	text-decoration: none;
+}
+#header .header-nav li a:hover {
+	color: #FFB81C;
+}
+#pageBody {
+	position: relative;
+	width: 100%;
+}
+#pageBody .pd-panel {
+	position: absolute;
+	width: 400px;
+	top: 130px;
+	right: 100px;
+	background-color: #FFFFFF;
+}
+#pageBody .pd-panel form dl {
+	margin: 40px 55px;
+	padding: 0px;
+}
+#pageBody .pd-panel form dl dd {
+	margin: 0px;
+	padding: 0px;
+}
+#pageBody .pd-panel form dl dd p input.form-input {
+	width: 100%;
+	height: 36px;
+	text-indent: 5px;
+	box-sizing: border-box;
+}
+#pageBody .pd-panel form dl dd p input.form-input:focus {
+	border: solid 1px #8D0000;
+	outline: none; /* 取消外框轮廓 */
+}
+#pageBody .pd-panel form dl dd p.form-btn {
+	margin-top: 30px;
+}
+#pageBody .pd-panel form dl dd p.form-btn input {
+	width: 100%;
+	height: 40px;
+	border: none;
+	font-size: 14px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	color: #F5F5F5;
+	background-color: #FF7F00;
+	cursor: pointer;
+}
+#pageBody .pd-panel form dl dd p.form-label {
+	color: #545454;
+}
+#pageBody .pd-panel form dl dd p.form-desc {
+	color: #8B8B83;
+	line-height: 20px; /* 行距 */
+}
+#pageBody .pd-panel form dl dd p.form-desc a {
+	color: #FF7F00;
+	text-decoration: none;
+}

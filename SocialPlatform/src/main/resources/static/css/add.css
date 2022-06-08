@@ -1,0 +1,63 @@
+@charset "utf-8";
+#pageBody .content {
+	position: relative;
+	width: 1000px;
+	margin: auto;
+}
+#pageBody .content .input-bar {
+	position: relative;
+	width: 500px;
+	height: 40px;
+	text-align: right;
+	line-height: 40px;
+	margin:auto;
+	background-color: #F9F2F4;
+}
+#pageBody .content .input-bar > i {
+	margin-right: 10px;
+	padding: 5px;
+	border-radius: 3px;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color: #398439;
+	cursor: pointer;
+}
+#pageBody .content .input-bar > i:hover {
+	background-color: #5CB85C;
+}
+#pageBody .content .input-panel {
+	position: relative;
+	width: 500px;
+	margin: 20px auto 20px;
+	border: solid 1px #CECECE;
+	border-radius: 5px;
+	box-shadow: 0px 0px 5px 2px #CECECE;
+}
+#pageBody .content .input-panel form dl {
+	margin: 20px 50px;
+}
+#pageBody .content .input-panel form dl dt {
+	margin: 10px 0px 30px;
+	padding: 0px;
+	font-size: 16px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	text-align: center;
+}
+#pageBody .content .input-panel form dl dd {
+	margin: 16px 0px;
+	padding: 0px;
+}
+#pageBody .content .input-panel form dl dd textarea {
+	height: 120px;
+}
+#pageBody .content .input-panel form dl dd.btn-groups {
+	text-align: center;
+}
+#pageBody .content .input-panel form dl dd input:nth-child(n+2) {
+	margin-left: 20px;
+}
+#pageBody .content .input-panel form dl dd p span.error {
+	float: right;
+	color: #AC2925;
+}

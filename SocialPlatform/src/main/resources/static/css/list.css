@@ -1,0 +1,90 @@
+@charset "utf-8";
+#pageBody .content {
+	position: relative;
+	width: 1000px;
+	margin: 30px 0px 0px 180px;
+}
+#pageBody .content .search {
+	position: relative;
+	width: 100%;
+}
+#pageBody .content .search p {
+	text-align: center;
+}
+#pageBody .content .search p .form-input {
+	width: 280px;
+	height: 36px;
+	border: solid 1px #CECECE;
+	border-radius: 3px;
+	/* box-sizing: border-box; */
+	outline: none;
+	text-indent: 5px;
+	vertical-align: middle;
+}
+#pageBody .content .search p .form-input:focus {
+	border-color: #F0AD4E;
+}
+#pageBody .content .search p .btn {
+	width: 70px;
+}
+#pageBody .content .data-list {
+	position: relative;
+	width: 100%;
+	margin-top: 40px;
+}
+#pageBody .content .data-list p.data-info {
+	margin: 40px auto 20px;
+	text-align: left;
+	font-size: 14px;
+}
+#pageBody .content .data-list form table tr th {
+	text-align: center;
+} 
+#pageBody .content .data-list form table tr td {
+	text-align: center;
+}
+#pageBody .content .data-list form table tr td.text-left {
+	text-align: left;
+	max-width: 300px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+#pageBody .content .oper-bar {
+	position: absolute;
+	width: 100%;
+	margin: -5px auto 20px;
+	overflow: hidden;
+}
+#pageBody .content .oper-bar .btn-bar {
+	float: left;
+	width: 300px;
+}
+#pageBody .content .oper-bar .btn-bar button i {
+	margin-right: 5px;
+}
+#pageBody .content .oper-bar .page-bar {
+	float: right;
+	width: 500px;
+	height: 36px;
+	line-height: 36px;
+	text-align: right;
+}
+#pageBody .content .oper-bar .page-bar a {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	border-radius: 3px;
+	line-height: 24px;
+	text-align: center;
+	color: #101010;
+	text-decoration: none;
+}
+#pageBody .content .oper-bar .page-bar a.active {
+	color: #FFFFFF;
+	background-color: #6495ED;
+}
+#pageBody .content .oper-bar .page-bar a:hover {
+	color: #FFFFFF;
+	background-color: #6495ED;
+}
